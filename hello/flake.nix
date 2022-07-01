@@ -14,11 +14,28 @@
 
         # Linux-specific Nixpkgs (used for the actual contents of the image)
         pkgsLinux = import nixpkgs { system = "x86_64-linux"; };
+
+        # The package for which the image is essentially a wrapper
+        hello = pkgsLinux.hello;
       in {
         defaultPackage = pkgs.dockerTools.buildImage {
-          name = "hello-docker";
+          # This metadata names the image nix-docker-hello:v0.1.0
+          name = "nix-docker-hello";
+          tag = "v0.1.0";
+
+          # Build an environment for the image
+          # For more info: https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
+          contents = pkgs.buildEnv {
+            name = "hello-image-env";
+            paths = [
+              hello
+            ];
+          };
+
+          # Image configuration
           config = {
-            Cmd = [ "${pkgsLinux.hello}/bin/hello" ];
+            # This enables us to pass args to the image
+            Entrypoint = [ "hello" ];
           };
         };
       }
