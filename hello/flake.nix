@@ -14,11 +14,13 @@
 
         # Linux-specific Nixpkgs (used for the actual contents of the image)
         pkgsLinux = import nixpkgs { system = "x86_64-linux"; };
+
+        version = builtins.readFile ./VERSION;
       in {
         defaultPackage = pkgs.dockerTools.buildImage {
           # This metadata names the image nix-docker-hello:v0.1.0
           name = "nix-docker-hello";
-          tag = builtins.readFile ./VERSION;
+          tag =  "v${version}";
 
           # Build an environment for the image
           # For more info: https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
