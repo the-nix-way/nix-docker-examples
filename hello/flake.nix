@@ -14,9 +14,6 @@
 
         # Linux-specific Nixpkgs (used for the actual contents of the image)
         pkgsLinux = import nixpkgs { system = "x86_64-linux"; };
-
-        # The package for which the image is essentially a wrapper
-        hello = pkgsLinux.hello;
       in {
         defaultPackage = pkgs.dockerTools.buildImage {
           # This metadata names the image nix-docker-hello:v0.1.0
@@ -27,7 +24,8 @@
           # For more info: https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
           contents = pkgs.buildEnv {
             name = "hello-image-env";
-            paths = [
+            paths = with pkgsLinux; [
+              # The package for which the image is essentially a wrapper
               hello
             ];
           };
