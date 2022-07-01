@@ -18,7 +18,7 @@
         defaultPackage = pkgs.dockerTools.buildImage {
           # This metadata names the image nix-docker-hello:v0.1.0
           name = "nix-docker-hello";
-          tag = "v0.1.0";
+          tag = builtins.readFile ./VERSION;
 
           # Build an environment for the image
           # For more info: https://nixos.org/manual/nixpkgs/stable/#sec-building-environment

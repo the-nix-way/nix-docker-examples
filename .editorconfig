@@ -9,5 +9,5 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.lock]
+[{*.lock,VERSION}]
 insert_final_newline = false
