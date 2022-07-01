@@ -15,6 +15,7 @@
         # Linux-specific Nixpkgs (used for the actual contents of the image)
         pkgsLinux = import nixpkgs { system = "x86_64-linux"; };
 
+        # Get the image version from an external file
         version = builtins.readFile ./VERSION;
       in {
         defaultPackage = pkgs.dockerTools.buildImage {
