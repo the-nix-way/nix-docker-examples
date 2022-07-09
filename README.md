@@ -1,8 +1,9 @@
 # Nix Docker examples
 
-| Directory           | Docker image contents    |
-| :------------------ | :----------------------- |
-| [`hello`](./hello/) | Just the `hello` package |
+| Directory             | Docker image contents               |
+| :-------------------- | :---------------------------------- |
+| [`hello`](./hello/)   | Just the `hello` package            |
+| [`script`](./script/) | A shell script turned into an image |
 
 In each project, you can run the following to build and run the image:
 
