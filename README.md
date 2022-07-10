@@ -1,9 +1,9 @@
 # Nix Docker examples
 
-| Directory             | Docker image contents               |
-| :-------------------- | :---------------------------------- |
-| [`hello`](./hello/)   | Just the `hello` package            |
-| [`script`](./script/) | A shell script turned into an image |
+| Directory             | Docker image contents                        |
+| :-------------------- | :------------------------------------------- |
+| [`hello`](./hello/)   | An image containing just the `hello` package |
+| [`script`](./script/) | An image wrapping a shell script             |
 
 In each project, you can run the following to build and run the image:
 
@@ -18,3 +18,4 @@ The `IMAGE_NAME` and `IMAGE_HASH` need to match the specific example.
 > All examples use [Nix flakes][flakes].
 
 [flakes]: https://nixos.wiki/wiki/Flakes
+[go]: https://golang.org

@@ -25,7 +25,7 @@
 
           # Build an environment for the image
           # For more info: https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
-          contents = pkgs.buildEnv {
+          copyToRoot = pkgs.buildEnv {
             name = "hello-image-env";
             paths = with pkgsLinux; [
               # The package for which the image is essentially a wrapper
