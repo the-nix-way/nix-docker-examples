@@ -9,36 +9,54 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
+        # Nixpkgs for the build system
         pkgs = import nixpkgs { inherit system; };
 
-        linux = "x86_64-linux";
-        pkgsLinux = import nixpkgs { system = linux; };
+        # Nixpkgs for the target system
+        targetSystem = "x86_64-linux";
+        pkgsLinux = import nixpkgs { system = targetSystem; };
 
+        # The default shell for x86_64-linux
         shell = pkgsLinux.runtimeShellPackage;
 
-        script = builtins.readFile (pkgs.substituteAll {
-          src = ./hello.sh;
-          shell = shell.shellPath;
-          inherit system linux;
-        });
-
-        hello = pkgs.writeScriptBin "hello" script;
-      in {
-        defaultPackage = pkgs.dockerTools.buildImage {
-          name = "nix-docker-script";
-          tag =  "v0.1.0";
-
-          contents = pkgs.buildEnv {
-            name = "env";
+        # A base image with just a shell and coreutils
+        baseImage = pkgs.dockerTools.buildImage {
+          name = "base";
+          tag = "latest";
+          copyToRoot = pkgs.buildEnv {
+            name = "base-env";
             paths = [
-              hello
               shell
               pkgsLinux.coreutils
             ];
           };
+        };
+
+        # The script that our Docker image will wrap. The string substitutions via the
+        # `substituteAll` function enable us to pass attributes into the script itself.
+        script = builtins.readFile (pkgs.substituteAll {
+          src = ./entrypoint.sh;
+          inherit baseImage system targetSystem;
+          shell = shell.shellPath;
+        });
+
+        # Our script converted to a package
+        entrypoint = pkgs.writeScriptBin "entrypoint.sh" script;
+      in {
+        defaultPackage = pkgs.dockerTools.buildImage {
+          name = "nix-docker-script";
+          tag =  "v0.1.0";
+          fromImage = baseImage;
+
+          copyToRoot = pkgs.buildEnv {
+            name = "script-env";
+            paths = [
+              entrypoint
+            ];
+          };
 
           config = {
-            Cmd = [ "hello" ];
+            Entrypoint = [ "entrypoint.sh" ];
           };
         };
       }
