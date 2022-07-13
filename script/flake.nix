@@ -11,6 +11,8 @@
       let
         # Nixpkgs for the build system
         pkgs = import nixpkgs { inherit system; };
+        inherit (pkgs) substituteAll;
+        inherit (pkgs.dockerTools) buildImage;
 
         # Nixpkgs for the target system
         targetSystem = "x86_64-linux";
@@ -20,7 +22,7 @@
         shell = pkgsLinux.runtimeShellPackage;
 
         # A base image with just a shell and coreutils
-        baseImage = pkgs.dockerTools.buildImage {
+        baseImage = buildImage {
           name = "shell-plus-coreutils";
           tag = "latest";
 
@@ -31,8 +33,8 @@
         };
 
         # The script that our Docker image will wrap. The string substitutions via the
-        # `substituteAll` function enable us to pass attributes into the script itself.
-        script = builtins.readFile (pkgs.substituteAll {
+        # `substituteAll` function pass attributes into the script.
+        script = builtins.readFile (substituteAll {
           src = ./entrypoint.sh;
           inherit system targetSystem;
           baseImageName = baseImage.imageName;
@@ -42,7 +44,7 @@
         # Our script converted to a package
         entrypoint = pkgs.writeScriptBin "entrypoint.sh" script;
       in {
-        defaultPackage = pkgs.dockerTools.buildImage {
+        defaultPackage = buildImage {
           name = "nix-docker-script";
           tag =  "v0.1.0";
           fromImage = baseImage;
