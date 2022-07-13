@@ -50,7 +50,7 @@
 
           config = {
             Cmd = [ "web" ];
-            ExposedPorts."8080/tcp" = {};
+            ExposedPorts."1111/tcp" = {};
           };
         };
       }

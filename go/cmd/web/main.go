@@ -9,9 +9,9 @@ import (
 func main() {
   srv := gin.Default()
 
-  srv.GET("/", func(c *gin.Context) {
+  srv.GET("/hello", func(c *gin.Context) {
     c.String(http.StatusOK, "Welcome to Go inside Docker built with Nix!")
   })
 
-  srv.Run()
+  srv.Run(":1111")
 }
