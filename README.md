@@ -2,6 +2,7 @@
 
 | Directory             | Docker image contents                        |
 | :-------------------- | :------------------------------------------- |
+| [`go`](./go/)         | A simple [Go] web service                    |
 | [`hello`](./hello/)   | An image containing just the `hello` package |
 | [`script`](./script/) | An image wrapping a shell script             |
 
