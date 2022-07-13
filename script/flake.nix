@@ -21,7 +21,7 @@
 
         # A base image with just a shell and coreutils
         baseImage = pkgs.dockerTools.buildImage {
-          name = "base";
+          name = "shell-plus-coreutils";
           tag = "latest";
 
           copyToRoot = [
@@ -34,7 +34,8 @@
         # `substituteAll` function enable us to pass attributes into the script itself.
         script = builtins.readFile (pkgs.substituteAll {
           src = ./entrypoint.sh;
-          inherit baseImage system targetSystem;
+          inherit system targetSystem;
+          baseImageName = baseImage.imageName;
           shell = shell.shellPath;
         });
 
