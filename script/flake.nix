@@ -11,7 +11,7 @@
       let
         # Nixpkgs for the build system
         pkgs = import nixpkgs { inherit system; };
-        inherit (pkgs) substituteAll;
+        inherit (pkgs) buildEnv substituteAll writeScriptBin;
         inherit (pkgs.dockerTools) buildImage;
 
         # Nixpkgs for the target system
@@ -40,14 +40,14 @@
         });
 
         # Our script converted to a package
-        entrypoint = pkgs.writeScriptBin "entrypoint.sh" script;
+        entrypoint = writeScriptBin "entrypoint.sh" script;
       in {
         packages.default = buildImage {
           name = "nix-docker-script";
           tag =  "v0.1.0";
           fromImage = baseImage;
 
-          copyToRoot = pkgs.buildEnv {
+          copyToRoot = buildEnv {
             name = "script-env";
             paths = [
               entrypoint
