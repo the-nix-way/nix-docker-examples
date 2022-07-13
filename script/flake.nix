@@ -48,17 +48,14 @@
           fromImage = baseImage;
 
           copyToRoot = buildEnv {
-            name = "script-env";
+            name = "script-image-env";
             paths = [
               entrypoint
             ];
           };
 
           # Final image configuration
-          config = {
-            # This enables us to pass args to the image
-            Entrypoint = [ "entrypoint.sh" ];
-          };
+          config.Entrypoint = [ "entrypoint.sh" ];
         };
       }
     );

@@ -36,10 +36,7 @@
           };
 
           # Final image configuration
-          config = {
-            # This enables us to pass args to the image
-            Entrypoint = [ "hello" ];
-          };
+          config.Entrypoint = [ "hello" ];
         };
       }
     );
