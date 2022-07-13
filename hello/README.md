@@ -1,4 +1,4 @@
-# Hello
+# Hello example
 
 Build the image using [Nix] and [load] the result into [Docker]:
 

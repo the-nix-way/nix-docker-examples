@@ -1,14 +1,9 @@
 # Script example
 
-Build the image:
+Build the image using [Nix] and [load] the result into [Docker]:
 
 ```shell
 nix build .
-```
-
-Load the image into Docker:
-
-```shell
 docker load < result
 ```
 
@@ -43,3 +38,7 @@ nix build 'github:the-nix-way/nix-docker-examples?dir=script'
 docker load < result
 docker run -t nix-docker-script:v0.1.0
 ```
+
+[docker]: https://docker.com
+[load]: https://docs.docker.com/engine/reference/commandline/load
+[nix]: https://nixos.org
