@@ -1,5 +1,5 @@
 {
-  description = "A Docker image packaging a script";
+  description = "A Docker image wrapping a shell script";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
@@ -23,13 +23,11 @@
         baseImage = pkgs.dockerTools.buildImage {
           name = "base";
           tag = "latest";
-          copyToRoot = pkgs.buildEnv {
-            name = "base-env";
-            paths = [
-              shell
-              pkgsLinux.coreutils
-            ];
-          };
+
+          copyToRoot = [
+            shell
+            pkgsLinux.coreutils
+          ];
         };
 
         # The script that our Docker image will wrap. The string substitutions via the
