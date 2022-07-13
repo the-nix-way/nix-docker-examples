@@ -3,7 +3,7 @@
 Build the image using [Nix] and [load] the result into [Docker]:
 
 ```shell
-nix build .
+nix build
 docker load < result
 ```
 

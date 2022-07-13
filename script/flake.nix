@@ -21,11 +21,9 @@
         # The default shell for x86_64-linux
         shell = pkgsLinux.runtimeShellPackage;
 
-        # A base image with just a shell and coreutils
+        # A base image with just a shell and coreutils. Doesn't require a tag.
         baseImage = buildImage {
           name = "shell-plus-coreutils";
-          tag = "latest";
-
           copyToRoot = [
             shell
             pkgsLinux.coreutils
@@ -44,7 +42,7 @@
         # Our script converted to a package
         entrypoint = pkgs.writeScriptBin "entrypoint.sh" script;
       in {
-        defaultPackage = buildImage {
+        packages.default = buildImage {
           name = "nix-docker-script";
           tag =  "v0.1.0";
           fromImage = baseImage;

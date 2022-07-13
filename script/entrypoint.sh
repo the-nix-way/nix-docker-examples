@@ -1,6 +1,6 @@
 #!@shell@
 
-ARGS=$@
+ARGS=${@:-none}
 
 cat << EOM
 Hello! Here's some information about this image:
@@ -10,6 +10,6 @@ Hello! Here's some information about this image:
   built-for:   @targetSystem@,
   shell:       @shell@,
   base-image:  @baseImageName@
-  args-passed: "${ARGS}"
+  args-passed: ${ARGS}
 }
 EOM

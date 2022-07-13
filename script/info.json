@@ -1,0 +1,24 @@
+{
+  "layer": [
+    {
+      "index": 0,
+      "id": "ac1f556bc1ca1565ea626a5c7c68140e9fcd98c0435acfd1980a7ddb73a69d16",
+      "digestId": "sha256:73ed9d67ad8d5966c0cf6aac3045b9d158d852a9f6a19204370874d2c376e944",
+      "sizeBytes": 45906403,
+      "command": ""
+    },
+    {
+      "index": 1,
+      "id": "17858464dc142ae47da36129559e531a47a8dc2297d155989fcbe6c223e6621a",
+      "digestId": "sha256:2a1b4a02b135093424b78a3c9f3d4f26c5adaefced43c52cc81c780f35178ddc",
+      "sizeBytes": 244,
+      "command": ""
+    }
+  ],
+  "image": {
+    "sizeBytes": 45906647,
+    "inefficientBytes": 0,
+    "efficiencyScore": 1,
+    "fileReference": []
+  }
+}

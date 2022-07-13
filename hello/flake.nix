@@ -18,7 +18,7 @@
         # Get the image version from an external file
         version = builtins.readFile ./VERSION;
       in {
-        defaultPackage = pkgs.dockerTools.buildImage {
+        packages.default = pkgs.dockerTools.buildImage {
           # This metadata names the image nix-docker-hello:v0.1.0
           name = "nix-docker-hello";
           tag =  "v${version}";
