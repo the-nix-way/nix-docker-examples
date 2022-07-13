@@ -29,15 +29,14 @@
             name = "hello-image-env";
             paths = with pkgsLinux; [
               # The package for which the image is essentially a wrapper
-              cowsay
               hello
             ];
           };
 
-          # Image configuration
+          # Final image configuration
           config = {
             # This enables us to pass args to the image
-            Entrypoint = [ "cowsay" ];
+            Entrypoint = [ "hello" ];
           };
         };
       }

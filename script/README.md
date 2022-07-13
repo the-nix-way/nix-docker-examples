@@ -33,3 +33,13 @@ Hello! Here's some information about this image:
 ```
 
 The `built-by` field may change if you're using a different platform.
+
+## Build without checking out
+
+You can also build and run the image without having access to this code locally:
+
+```shell
+nix build 'github:the-nix-way/nix-docker-examples?dir=script'
+docker load < result
+docker run -t nix-docker-script:v0.1.0
+```
