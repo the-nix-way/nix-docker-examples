@@ -4,21 +4,26 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, gitignore }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         # Use system-specific Nixpkgs to build everything
         pkgs = import nixpkgs { inherit system; };
         inherit (pkgs) buildEnv;
         inherit (pkgs.dockerTools) buildImage;
-        inherit (pkgs.lib) cleanSource;
+
+        inherit (gitignore.lib) gitignoreSource;
 
         # The Go web service package
         goService = pkgs.buildGoModule {
           name = "go-svc";
-          src = cleanSource ./.;
+          src = gitignoreSource ./.;
           vendorSha256 = "sha256-fwJTg/HqDAI12mF1u/BlnG52yaAlaIMzsILDDZuETrI=";
           subPackages = [ "cmd/web" ];
 
