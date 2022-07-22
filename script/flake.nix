@@ -32,15 +32,17 @@
 
         # The script that our Docker image will wrap. The string substitutions via the
         # `substituteAll` function pass attributes into the script.
+        scriptFile = "entrypoint.sh";
+
         script = builtins.readFile (substituteAll {
-          src = ./entrypoint.sh;
+          src = ./${scriptFile};
           inherit system targetSystem;
           baseImageName = baseImage.imageName;
           shell = shell.shellPath;
         });
 
         # Our script converted to a package
-        entrypoint = writeScriptBin "entrypoint.sh" script;
+        entrypoint = writeScriptBin scriptFile script;
       in {
         packages.default = buildImage {
           name = "nix-docker-script";
@@ -55,7 +57,7 @@
           };
 
           # Final image configuration
-          config.Entrypoint = [ "entrypoint.sh" ];
+          config.Entrypoint = [ scriptFile ];
         };
       }
     );
