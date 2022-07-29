@@ -9,21 +9,21 @@ import (
 )
 
 func getPort() string {
-  if os.Getenv("PORT") != "" {
-    return os.Getenv("PORT")
-  } else {
-    return "1111"
-  }
+	if os.Getenv("PORT") != "" {
+		return os.Getenv("PORT")
+	} else {
+		return "1111"
+	}
 }
 
 func main() {
-  srv := gin.Default()
+	srv := gin.Default()
 
-  addr := fmt.Sprintf(":%s", getPort())
+	addr := fmt.Sprintf(":%s", getPort())
 
-  srv.GET("/hello", func(c *gin.Context) {
-    c.String(http.StatusOK, "Welcome to Go inside Docker built with Nix!")
-  })
+	srv.GET("/hello", func(c *gin.Context) {
+		c.String(http.StatusOK, "Welcome to Go inside Docker built with Nix!")
+	})
 
-  srv.Run(addr)
+	srv.Run(addr)
 }
