@@ -1,5 +1,7 @@
 # Nix Docker examples
 
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
 | Directory             | Docker image contents                        |
 | :-------------------- | :------------------------------------------- |
 | [`go`](./go/)         | A simple [Go] web service                    |
