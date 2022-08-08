@@ -48,16 +48,13 @@
 
           copyToRoot = buildEnv {
             name = "go-svc-env";
-            paths = [
-              goService
-            ];
+            paths = [ goService ];
           };
 
           config = {
             Cmd = [ "web" ];
-            ExposedPorts."1111/tcp" = {};
+            ExposedPorts."1111/tcp" = { };
           };
         };
-      }
-    );
+      });
 }

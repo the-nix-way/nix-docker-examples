@@ -24,10 +24,7 @@
         # A base image with just a shell and coreutils. Doesn't require a tag.
         baseImage = buildImage {
           name = "shell-plus-coreutils";
-          copyToRoot = [
-            shell
-            pkgsLinux.coreutils
-          ];
+          copyToRoot = [ shell pkgsLinux.coreutils ];
         };
 
         # The script that our Docker image will wrap. The string substitutions via the
@@ -46,19 +43,16 @@
       in {
         packages.default = buildImage {
           name = "nix-docker-script";
-          tag =  "v0.1.0";
+          tag = "v0.1.0";
           fromImage = baseImage;
 
           copyToRoot = buildEnv {
             name = "script-image-env";
-            paths = [
-              entrypoint
-            ];
+            paths = [ entrypoint ];
           };
 
           # Final image configuration
           config.Entrypoint = [ scriptFile ];
         };
-      }
-    );
+      });
 }
