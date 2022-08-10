@@ -11,48 +11,49 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, gitignore }:
-    flake-utils.lib.eachDefaultSystem (system:
+    let
+      target = {
+        os = "linux";
+        arch = "arm64";
+      };
+
+      buildLinuxOverlay = self: super: {
+        buildGoModule = super.buildGoModule.override {
+          go = super.go // {
+            GOOS = target.os;
+            GOARCH = target.arch;
+          };
+        };
+      };
+
+      inherit (gitignore.lib) gitignoreSource;
+    in flake-utils.lib.eachDefaultSystem (system:
       let
         # Use system-specific Nixpkgs to build everything
-        pkgs = import nixpkgs { inherit system; };
-        inherit (pkgs) buildEnv;
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ buildLinuxOverlay ];
+        };
+
+        inherit (pkgs) buildEnv buildGoModule;
         inherit (pkgs.dockerTools) buildImage;
 
-        inherit (gitignore.lib) gitignoreSource;
-
         # The Go web service package
-        goService = pkgs.buildGoModule {
+        goService = buildGoModule {
           name = "go-svc";
           src = gitignoreSource ./.;
           vendorSha256 = "sha256-fwJTg/HqDAI12mF1u/BlnG52yaAlaIMzsILDDZuETrI=";
           subPackages = [ "cmd/web" ];
-
-          # Build a Linux executable
-          preBuild = ''
-            export GOOS="linux"
-            export CGO_ENABLED=0
-          '';
-
-          # When you build a Linux binary, the Go compiler outputs it to
-          # ./linux_arm64/web instead of just ./web. This post-install step
-          # removes the linux_arm64 directory.
-          postInstall = ''
-            mv $out/bin/linux_arm64/web $out/bin/web
-            rm -rf $out/bin/linux_arm64
-          '';
         };
+
+        run = "${goService}/bin/${target.os}_${target.arch}/web";
       in {
         packages.default = buildImage {
           name = "nix-docker-go-svc";
           tag = "v0.1.0";
 
-          copyToRoot = buildEnv {
-            name = "go-svc-env";
-            paths = [ goService ];
-          };
-
           config = {
-            Cmd = [ "web" ];
+            Entrypoint = [ run ];
             ExposedPorts."1111/tcp" = { };
           };
         };
