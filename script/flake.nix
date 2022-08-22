@@ -40,7 +40,8 @@
 
         # Our script converted to a package
         entrypoint = writeScriptBin scriptFile script;
-      in {
+      in
+      {
         packages.default = buildImage {
           name = "nix-docker-script";
           tag = "v0.1.0";
@@ -50,6 +51,8 @@
             name = "script-image-env";
             paths = [ entrypoint ];
           };
+
+          runAsRoot = "";
 
           # Final image configuration
           config.Entrypoint = [ scriptFile ];

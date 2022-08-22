@@ -18,7 +18,8 @@
 
         # Get the image version from an external file
         version = builtins.readFile ./VERSION;
-      in {
+      in
+      {
         packages.default = buildImage {
           # This metadata names the image nix-docker-hello:v0.1.0
           name = "nix-docker-hello";

@@ -19,7 +19,7 @@
 
       buildLinuxOverlay = self: super: {
         buildGoModule = super.buildGoModule.override {
-          go = super.go // {
+          go = super.go_1_19 // {
             GOOS = target.os;
             GOARCH = target.arch;
           };
@@ -27,7 +27,8 @@
       };
 
       inherit (gitignore.lib) gitignoreSource;
-    in flake-utils.lib.eachDefaultSystem (system:
+    in
+    flake-utils.lib.eachDefaultSystem (system:
       let
         # Use system-specific Nixpkgs to build everything
         pkgs = import nixpkgs {
@@ -47,7 +48,8 @@
         };
 
         run = "${goService}/bin/${target.os}_${target.arch}/web";
-      in {
+      in
+      {
         packages.default = buildImage {
           name = "nix-docker-go-svc";
           tag = "v0.1.0";
