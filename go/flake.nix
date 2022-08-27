@@ -19,7 +19,8 @@
 
       buildLinuxOverlay = self: super: {
         buildGoModule = super.buildGoModule.override {
-          go = super.go_1_19 // {
+          go = super.go_1_18 // {
+            CGO_ENABLED = 0;
             GOOS = target.os;
             GOARCH = target.arch;
           };
